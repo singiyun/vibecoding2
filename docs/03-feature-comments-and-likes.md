@@ -1,45 +1,37 @@
-# Task 03: Comments & Interaction System
+# Task 03: UI Components Construction
 
 ## Context & Objectives
-Add social interaction capability through comments and likes. Ensure proper ownership checks for deletion without login.
+Build the visual layer of the game that reflects the current state. This includes the player characters, health bars, and the message log.
 
 ## Requirements from PRD
-- **Comments**:
-  - Single depth only (No nested replies).
-  - Anonymous basic text.
-  - Deletable ONLY by the original author (match UUID).
-- **Likes**:
-  - Applicable to Posts and Comments.
-  - One like per UUID per Item.
-  - Toggle-able (Like/Unlike).
-- **Deletion**:
-  - Post/Comment owners can delete their own content.
+- **Layout**: P1 (Left/Bottom), P2 (Right/Top).
+- **Health Bar**: Under name, HP text small on left.
+- **Message Log**: Typing effect, bottom translucent box.
+- **Orientation**: P1 flipped (scaleX(-1)), P2 normal.
 
 ## Implementation Steps
-1.  **Backend API: Comments**
-    - `POST /api/posts/[id]/comments`: Create comment.
-    - `DELETE /api/comments/[id]`:
-      - **CRITICAL**: Check if `request.uuid === comment.authorId`.
-      - Only delete if match.
+1.  **Game Container Layout**
+    - Use CSS Grid or Flexbox to position P1 and P2.
+    - **Mobile**: Stack vertically (P2 Top, P1 Bottom).
+    - **Desktop**: Side by side (P1 Left, P2 Right diagonal).
 
-2.  **Backend API: Likes**
-    - `POST /api/likes`:
-      - Toggle logic: If exists -> Delete (Unlike), If not -> Create (Like).
-      - Prevent duplicates based on `(userId, targetId, type)`.
+2.  **Character Component**
+    - Accepts `player` data.
+    - Renders `FallbackImage` (Togepi).
+    - Applies `scale-x-[-1]` for P1.
+    - Reserved space for animation anchors.
 
-3.  **Frontend: Post Detail Page**
-    - Display full post content.
-    - [Delete Post] button: Only visible/active if `deviceUUID === post.authorId`.
-    - Like Button: Toggle state with upbeat micro-animation.
+3.  **HUD / Health Bar**
+    - Create `HealthBar` component.
+    - Smooth usage of CSS transition for width changes.
+    - Display Name and numeric HP.
 
-4.  **Frontend: Comment Section**
-    - Input area at bottom or inline.
-    - List of comments.
-    - [X] button on comments: Only visible if `deviceUUID === comment.authorId`.
-    - Like button on comments.
+4.  **Message Log Component**
+    - Fixed container at bottom.
+    - Implement "Typewriter" effect hook: receives string, prints char by char.
+    - Translucent background (`bg-black/50`).
 
 ## Deliverables
-- [ ] Comment on posts works.
-- [ ] Like/Unlike posts and comments works.
-- [ ] "Delete" buttons only appear for the creator.
-- [ ] Deletion actually removes data from DB.
+- [ ] Players positioned correctly on screen.
+- [ ] Health bars update when props change.
+- [ ] Message log displays text with typing effect.

@@ -1,49 +1,35 @@
-# Task 02: Identity & Post Management
+# Task 02: Game Logic and State Machine
 
 ## Context & Objectives
-Implement the core "No Login" identity system and the ability to create/read anonymous posts. This is the heart of the service.
+Implement the core mechanics of the game using a finite state machine. This ensures the flow (Init -> Turn -> Action -> Animation -> Result) is strictly followed and robust.
 
 ## Requirements from PRD
-- **Identity**:
-  - No Login / No Sign-up.
-  - Generate a UUID for the user on first visit.
-  - Store UUID in Browser (Cookie/LocalStorage).
-  - Use this UUID to identify "My Posts".
-- **Post Creation**:
-  - Title (Max 50 chars, Required).
-  - Content (Max 1000 chars, Required).
-  - Category (Optional: Love, Career, Relationships, School, Etc).
-  - *No image upload*.
-- **Post List**:
-  - Sort by: Latest (Default), Most Likes.
-  - Display: Title, Time (Relative), Like Count, Comment Count.
+- **State Machine**: INIT, TURN_START, ACTION_PENDING, ANIMATING, CHECK_RESULT.
+- **Data**: Moves (Tackle, Thunderbolt, Hyper Beam, etc.) with specific probabilities and data.
+- **Logic**: Random selection (Metronome), Damage calculation.
 
 ## Implementation Steps
-1.  **Identity Utility**
-    - Create a utility/hook (e.g., `useIdentity`) that checks for a stored UUID.
-    - IF missing -> Generate UUID -> Store in LocalStorage/Cookie.
-    - Ensure this UUID is sent with API requests as a header or body.
+1.  **Define Game Types & Constants**
+    - Define `GameState`, `Player`, `Move` interfaces.
+    - Create a constant `MOVES` array with probabilities (accumulated weights for RNG) and effects.
 
-2.  **Backend API: Posts**
-    - `POST /api/posts`:
-      - Validate inputs (Length limits).
-      - Save `authorId` from the identity UUID.
-      - Handle "Category" selection.
-    - `GET /api/posts`:
-      - Support pagination (Infinite scroll or Load More).
-      - Support sorting (Newest vs Popular).
+2.  **Develop State Hook (`useGameState`)**
+    - Implement `useReducer` or `useState` to manage the game phase.
+    - **INIT**: Handle name input and mode selection.
+    - **TURN_START**: Handle logic for switching turns. If CPU turn, trigger `setTimeout` for 1.5s delay.
+    - **ACTION_PENDING**: Wait for user input (Touch/Enter).
 
-3.  **Frontend: Write Page**
-    - Simple form: Title, Category (Dropdown/Chips), Content (Textarea).
-    - Client-side validation for character limits.
-    - Submit -> API Call -> Redirect to Home.
+3.  **Metronome Logic checks**
+    - Implement `castMetronome()` function:
+      - Roll 0-100.
+      - Select move based on probability distribution.
+      - Update State to `ANIMATING`.
 
-4.  **Frontend: Feed/Home**
-    - Display list of posts cards.
-    - Each card shows: Category badge, Title, Relative Time, Like/Comment icons with counts.
-    - Click card -> Navigate to `/posts/[id]`.
+4.  **Result Checking**
+    - After animation completes, check HP <= 0.
+    - Transition to `GAME_OVER` or loop back to `TURN_START`.
 
 ## Deliverables
-- [ ] Auto-generated User UUID on visit.
-- [ ] Post creation form working (Data saved to DB).
-- [ ] Home page displaying list of posts.
+- [ ] State Machine implemented (can log state transitions to console).
+- [ ] Metronome RNG logic verified (probabilities match PRD).
+- [ ] Turn switching logic works (including CPU delay).

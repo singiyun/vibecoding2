@@ -1,46 +1,32 @@
 # Task 01: Project Setup and Infrastructure
 
 ## Context & Objectives
-Initialize the "MaumTalk" anonymous advice board project. The goal is to set up a robust foundation with high performance and the required design aesthetics.
+Initialize the "Togepi Metronome Master" game environment within the existing Next.js project. The goal is to set up the page structure, install necessary animation libraries, and prepare asset fallback mechanisms.
 
 ## Requirements from PRD
-- **Platform**: Responsive Web (Mobile First), SPA Structure.
-- **Design**:
-  - Dark Mode Fixed: `#0F1115` background, `#FFFFFF` text.
-  - Primary Color: Green variations.
-  - Fonts: Clean, modern sans-serif (e.g., Pretendard or Inter).
-- **Performance**: Initial load < 5s.
+- **Tech Stack**: Next.js, Tailwind CSS, GSAP.
+- **Assets**: Fallback to shapes/emojis if images are missing.
+- **Layout**: 1200x800 base, responsive for mobile.
 
 ## Implementation Steps
-1.  **Initialize Project**
-    - Stack: Next.js (App Router), TypeScript, Tailwind CSS.
-    - Database: SQLite (via Prisma) or Supabase (Free tier) - *Agent Choice*.
-    - Package Manager: `npm` or `pnpm`.
+1.  **Install Dependencies**
+    - Run `npm install gsap` to enable high-performance animations.
 
-2.  **Configure Design System (Tailwind)**
-    - Extend `tailwind.config.ts`:
-      - Add custom colors: `background: #0F1115`, `primary: <green-hex>`.
-      - Configure typography.
-    - Create `globals.css`:
-      - Apply dark background globally.
-      - Reset defaults.
+2.  **Page Structure Setup**
+    - Create `app/game/page.tsx` as the main entry point.
+    - Create `components/game/` directory for game-specific components.
+    - Set up a container with `max-w-[1200px]` and `aspect-[3/2]` logic, centering it on screen.
 
-3.  **Layout Implementation**
-    - Create Root Layout:
-      - Header (Logo "MaumTalk", Search Bar placeholder, "My Activity" link).
-      - Main Content Area (Max width constraints for mobile view optimization).
-      - Footer (Simple copyright).
-    - Ensure fully responsive containers.
+3.  **Asset Management System**
+    - Create a utility `lib/gameAssets.ts` or similar.
+    - Define a mapping for images (background, togepi, effects).
+    - Implement a `FallbackImage` component that renders a colored `div` with an emoji or label if the image fails to load or is missing.
 
-4.  **Database & Schema Setup**
-    - Initialize Prisma/ORM.
-    - **Note**: Although User tables aren't needed (No Login), define the `Post` and `Comment` models early:
-      - `Post`: id, title, content, category, authorId (UUID), likeCount, createdAt.
-      - `Comment`: id, postId, content, authorId (UUID), likeCount, createdAt.
-      - `Like`: userId (UUID), targetId, type (POST/COMMENT).
+4.  **Basic Styling (Tailwind)**
+    - Config background colors for the game arena.
+    - Ensure P1 and P2 positioning classes are ready (Flex/Grid placeholders).
 
 ## Deliverables
-- [ ] Running Next.js application.
-- [ ] Tailwind configured with correct Dark Mode theme.
-- [ ] Database connected and Schema applied.
-- [ ] Basic Layout visible on localhost.
+- [ ] `npm install gsap` completed.
+- [ ] `/game` page accessible and renders a blank arena.
+- [ ] `FallbackImage` component working (displays placeholder when no image).

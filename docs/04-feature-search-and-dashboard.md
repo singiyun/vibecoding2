@@ -1,44 +1,31 @@
-# Task 04: "My Activity" & Search
+# Task 04: GSAP Animations and Visual Effects
 
 ## Context & Objectives
-Enable users to find content, specifically their own history and general keyword search. This completes the navigation requirements.
+Implement the "Magical" feel using GSAP. This is the core "Wow" factor of the game.
 
 ## Requirements from PRD
-- **My Activity**:
-  - "My Posts": List of posts created by the current UUID.
-  - (Optional MVP) "My Comments": List of comments.
-- **Search**:
-  - Target: Post Title & Content.
-  - Exclude: Comments.
-  - Response time: < 1 second.
-- **Warning**:
-  - Explicitly warn that clearing browser cache loses this history.
+- **Moves**: Distinct animations for Tackle, Thunderbolt, Hyper Beam, Heal, Leer, Splash.
+- **Timing**: 0.8s duration for moves.
+- **Feedback**: Screen shake on damage, Flash on critical (optional).
 
 ## Implementation Steps
-1.  **Backend API: Search**
-    - `GET /api/search?q=keyword`:
-      - Query DB for `title.contains(q) OR content.contains(q)`.
-      - Indexing may be needed for speed if DB grows (for MVP, standard query is likely fine).
-      - Return sorted by Newest.
+1.  **Animation Controller**
+    - Create a `useEffect` that listens to `gameState.currentMove` during `ANIMATING` phase.
+    - Trigger GSAP timeline based on the move name.
 
-2.  **Backend API: My Posts**
-    - `GET /api/my/posts`:
-      - Require UUID header.
-      - Return posts `where authorId === uuid`.
+2.  **Specific Move Animations**
+    - **Tackle**: Tween character position forward and back rapidly.
+    - **Thunderbolt**: Flash screen yellow, shake character, show "Bolt" emoji/shape overlay.
+    - **Hyper Beam**: Large beam (div scaleX expansion) from attacker to victim.
+    - **Heal**: Green floating particles/hearts up from character.
+    - **Leer**: Eye icon appears, target dims or shrinks slightly.
+    - **Splash**: Character bounces once, water drop emoji.
 
-3.  **Frontend: My Activity Page**
-    - Route: `/my`.
-    - Tab: "My Posts".
-    - List view identical to Home but filtered.
-    - Add a "Warning Banner": "Clearing browser data will lose your history."
-
-4.  **Frontend: Search Implementation**
-    - Integrate into the Header search bar.
-    - Trigger search on 'Enter' or click.
-    - Search Results Page: List of matching posts.
-    - Empty state: "No results found for..."
+3.  **Damage Feedback**
+    - `shakeScreen()`: GSAP logic to shake the main container.
+    - `showDamageNumber()`: Floating text "-40" appearing over victim.
 
 ## Deliverables
-- [ ] "My Activity" page listing user's own posts.
-- [ ] Search functionality returning relevant posts.
-- [ ] Performance check: Search feels instant (<1s).
+- [ ] All 6 moves have distinct visual feedback.
+- [ ] Animations sync with State Machine (state changes *after* anim completes).
+- [ ] Screen shake effects implemented.

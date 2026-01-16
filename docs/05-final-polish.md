@@ -1,38 +1,33 @@
-# Task 05: Final Polish & Optimization
+# Task 05: Final Polish and Mobile Optimization
 
 ## Context & Objectives
-Ensure the application is production-ready, safe, and meets the high aesthetic/performance standards demanded by the PRD.
+Ensure the game works perfectly on mobile devices and meets the "Wow" design standard.
 
 ## Requirements from PRD
-- **Profanity Filter**: Mask or block bad words in Posts/Comments.
-- **Performance**: < 5s Load.
-- **Design**: "Emotional implementation", "Smooth animations".
-- **SEO**: Proper metadata.
+- **Mobile**: Touch compatibility, vertical layout.
+- **Text**: All Korean.
+- **Aesthetics**: Premium feeling, no generic look.
 
 ## Implementation Steps
-1.  **Profanity Filtering**
-    - Use a lightweight library (e.g., `bad-words` or custom regex list).
-    - Middleware or API level check.
-    - Action: Either reject request with "Please use kind language" or replace with `***`.
+1.  **Mobile Testing & Touch Events**
+    - Verify `onClick` handles tap correctly (React handles this mostly, but check responsiveness).
+    - Ensure text sizes are readable on small screens.
+    - Verify Flex/Grid wrapping behavior (landscape vs portrait).
 
-2.  **UX/UI Polish**
-    - **Micro-interactions**: Add hover effects to cards, buttons.
-    - **Transitions**: Page transition animations (framer-motion recommended).
-    - **Skeleton Loading**: Show skeletons while fetching data (no layout shift).
+2.  **Visual Polish**
+    - Add gradients to background.
+    - Add "Glassmorphism" to HUD and Log box (backdrop-blur).
+    - ensure Fonts are applied (Google Fonts if needed).
 
-3.  **SEO & Metadata**
-    - Configure `metadata` in Next.js layout.
-    - Title: "MaumTalk - Anonymous Advice Board".
-    - Description: "Share your worries anonymously and get comfort."
-    - Viewport settings for mobile optimization.
+3.  **Edge Case Handling**
+    - What if HP goes negative? (Clamp to 0).
+    - What if animation stuck? (Safety timeout).
 
-4.  **Performance Check**
-    - Run Lighthouse audit.
-    - Optimize images (if any assets added).
-    - Minimize bundle size.
+4.  **Final Code Review**
+    - Single file structure or Component structure clean-up.
+    - Remove unused logs.
 
 ## Deliverables
-- [ ] Profanity filter active (Try creating a post with bad words).
-- [ ] Smooth UI with animations (`framer-motion` integrated).
-- [ ] SEO Meta tags validated.
-- [ ] Lighthouse Performance Score > 90.
+- [ ] Game is fully playable on Mobile Simulation.
+- [ ] "Magical" aesthetic confirmed (Gradients, blurs, smooth motion).
+- [ ] No English text remains in UI.
